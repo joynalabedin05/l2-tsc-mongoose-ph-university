@@ -1,14 +1,10 @@
-import express, { NextFunction, Request, Response } from 'express';
+import express from 'express';
 import { UserController } from './user.controller';
+import { createStudentValidationSchema } from '../student/student.validation';
+import validateRequest from '../../middlewares/validateRequest';
 
 const router = express.Router();
 
-const shenaBahini = (req: Request, res: Response, next: NextFunction)=>{
-    console.log('i am ashenabahini');
-    next();
-}
-
-
-router.post('/create-student',shenaBahini,  UserController.createStudent);
+router.post('/create-student',validateRequest(createStudentValidationSchema),  UserController.createStudent);
 
 export const UserRoutes = router;
