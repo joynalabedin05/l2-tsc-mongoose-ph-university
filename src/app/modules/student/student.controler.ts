@@ -1,10 +1,13 @@
-import { NextFunction, Request, Response } from 'express';
+
 import { StudentServices } from './student.service';
 import sendResponse from '../../utils/sendResponse';
 import httpStatus from 'http-status';
+import catchAsync from '../../utils/catchAsync';
 
-const getAllStudents = async (req: Request, res: Response, next: NextFunction) => {
-  try {
+
+
+const getAllStudents = catchAsync(async (req, res) => {
+ 
     const result = await StudentServices.getAllStudentFromDB();
    
     sendResponse(res, {
@@ -13,33 +16,38 @@ const getAllStudents = async (req: Request, res: Response, next: NextFunction) =
       message: 'student are retrieved successfully',
       data: result,
     });
-  } catch (err) {
-    next(err);
-  }
-};
-const getSingleStudent = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { studentId } = req.params;
-    const result = await StudentServices.getSingleStudentFromDB(studentId);
+})
 
-    // res.status(200).json({
-    //   success: true,
-    //   message: 'single student are retrieved successfully',
-    //   data: result,
-    // });
+const getSingleStudent = catchAsync(async (req, res) => {
+  
+  const { studentId } = req.params;
+  const result = await StudentServices.getSingleStudentFromDB(studentId);
 
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'single student are retrieved successfully',
-      data: result,
-    });
-  } catch (err) {
-    next(err);
-  }
-};
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'single student are retrieved successfully',
+    data: result,
+  });
 
+});
+ 
+const deleteStudent = catchAsync(async (req, res) => {
+  
+  const { studentId } = req.params;
+  const result = await StudentServices.deleteSingleStudentFromDB(studentId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'student deleted successfully',
+    data: result,
+  });
+
+});
+ 
 export const StudentController = {
   getAllStudents,
   getSingleStudent,
+  deleteStudent,
 }

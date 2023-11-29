@@ -1,7 +1,14 @@
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { UserController } from './user.controller';
 
 const router = express.Router();
-router.post('/create-student', UserController.createStudent);
+
+const shenaBahini = (req: Request, res: Response, next: NextFunction)=>{
+    console.log('i am ashenabahini');
+    next();
+}
+
+
+router.post('/create-student',shenaBahini,  UserController.createStudent);
 
 export const UserRoutes = router;
