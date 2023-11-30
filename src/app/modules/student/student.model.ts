@@ -5,7 +5,7 @@ import {
   LocalGuardian,
   TStudent,
   UserName,
-} from './student/student.interface';
+} from './student.interface';
 
 const userNameSchema = new Schema<UserName>({
   firstName: {
@@ -98,6 +98,10 @@ const studentSchema = new Schema<TStudent>({
     required: true,
   },
   profileImg: { type: String, required: true },
+  admissionSemester: {
+    type: Schema.Types.ObjectId,
+    ref: 'AcademicSemester',
+  },
   
 });
 

@@ -1,6 +1,7 @@
 // import { object } from "joi";
 import config from "../../config";
-import { Student } from "../student.model";
+import { TAcademicSemester } from "../academicSemester/academicSemester.inerface";
+import { Student } from "../student/student.model";
 import { TStudent } from "../student/student.interface";
 import { TUser } from "./user.interface";
 import { User } from "./user.model";
@@ -12,6 +13,11 @@ const createStudentIntoDB = async (password: string, studentData : TStudent) => 
     userData.password = password || config.default_pass as string;
 
     userData.role = 'student';
+
+  const generatedStudentID = (payload:TAcademicSemester )=>{
+
+  }
+
     userData.id = '203010001';
 
     const newUser = await User.create(userData);
