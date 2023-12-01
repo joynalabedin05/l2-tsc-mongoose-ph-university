@@ -1,51 +1,69 @@
-import { Schema, model } from "mongoose";
-import { TAcademicSemester } from "./academicSemester.inerface";
-import { AcademicSemesterCode, AcademicSemesterName, Months } from "./academicSemester.const";
+import { Schema, model } from 'mongoose';
+import {
+  AcademicSemesterCode,
+  AcademicSemesterName,
+  Months,
+} from './academicSemester.constant';
+import { TAcademicSemester } from './academicSemester.interface';
 
-const academicSemesterSchema = new Schema<TAcademicSemester>({
+
+const acdemicSemesterSchema = new Schema<TAcademicSemester>(
+  {
     name: {
-        type: String,
-        required: true,
-        enum: AcademicSemesterName,
+      type: String,
+      required: true,
+      enum: AcademicSemesterName,
     },
     year: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     code: {
-        type: String,
-        required: true,
-        enum: AcademicSemesterCode,
+      type: String,
+      required: true,
+      enum: AcademicSemesterCode,
     },
     startMonth: {
-        type: String,
-        required: true,
-        enum: Months,
+      type: String,
+      required: true,
+      enum: Months,
     },
-    
     endMonth: {
-        type: String,
-        required: true,
-        enum: Months,
+      type: String,
+      required: true,
+      enum: Months,
     },
-    
-},
-{
+  },
+  {
     timestamps: true,
+  },
+);
+
+acdemicSemesterSchema.pre('save', async function (next) {
+  const isSemesterExists = await AcademicSemester.findOne({
+    year: this.year,
+    name: this.name,
+  });
+
+  if (isSemesterExists) {
+    throw new Error('Semester is already exists !');
+  }
+  next();
 });
 
-academicSemesterSchema.pre('save', async function(next){
-    const isSemesterExists = await academicSemester.findOne({
-        year : this.year,
-        name : this.name,
-    });
-    if(isSemesterExists){
-        throw new Error('semester exists already');
-    }
-    next();
+export const AcademicSemester = model<TAcademicSemester>(
+  'AcademicSemester',
+  acdemicSemesterSchema,
+);
 
-});
-
+// Name Year
+//2030 Autumn => Created
+// 2031 Autumn
+//2030 Autumn => XXX
+//2030 Fall => Created
 
 
-export const academicSemester = model<TAcademicSemester>('academicSemester', academicSemesterSchema);
+
+// Autumn 01
+// Summar 02
+// Fall 03
