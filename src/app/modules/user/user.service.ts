@@ -14,7 +14,7 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
   const userData: Partial<TUser> = {};
 
   //if password is not given , use deafult password
-  userData.password = password || (config.default_pass as string);
+  userData.password = password || (config.default_password as string);
 
   //set student role
   userData.role = 'student';
