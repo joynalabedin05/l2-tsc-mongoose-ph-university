@@ -3,9 +3,9 @@
 import express, { Application } from 'express';
 const app: Application = express();
 import cors from 'cors';
-import globalErrorHandlers from './app/middlewares/globalerrorHandlers';
 import notFound from './app/middlewares/notFound';
 import router from './app/routes';
+import globalErrorHandler from './app/middlewares/globalErrorhandler';
 
 // parser
 
@@ -18,10 +18,15 @@ app.use(cors());
 
 app.use('/api/v1', router);
 
+// const test = async(req: Request, res: Response)=>{
+//     Promise.reject();
+// }
+// // Promise.reject();
+// app.get('/', test);
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
-app.use(globalErrorHandlers);
+app.use(globalErrorHandler);
 app.use(notFound);
 
 export default app;
